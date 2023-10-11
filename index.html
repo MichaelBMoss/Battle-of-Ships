@@ -25,7 +25,6 @@
             align-items: center;
             justify-content: center;
             color: white;
-            
         }
 
         #logo {
@@ -39,7 +38,7 @@
             height: 90%;
             aspect-ratio: 1 / 1;
             background-color: rgb(10, 175, 48);
-        };
+        }
 
         .button {
             margin-top: 3%;
@@ -49,7 +48,16 @@
             height: 10%;
             border: solid black 1px;
             background-color: blueviolet;
-        };
+        }
+
+        .square {
+            display: inline-block;
+            height: 100%;
+            width:10%;
+            border: black solid 1px;
+            margin: -1px;
+        }
+
     </style>
 
 
@@ -65,26 +73,44 @@
     console.log('script working');
 
     const bodyEl = document.body
-    console.log(bodyEl)
-
-
+    let gameboardEl;
+    
     function initialize() {
-        clear()
+        clearBody();
         createGameboard();
+        createGameGridAndGridObject();
     };
 
-    function clear() {
+    function clearBody() {
         //clear the body element but leave the logo
         const elementsToRemove = bodyEl.querySelectorAll(':not(#logo)');
         elementsToRemove.forEach(element => element.remove());
     }
 
     function createGameboard() {
-        const gameboard = document.createElement('div');
-        gameboard.id = "gameboard";
-        bodyEl.appendChild(gameboard);
-
+        gameboardEl = document.createElement('div');
+        gameboardEl.id = "gameboard";
+        bodyEl.appendChild(gameboardEl);
     }
+
+    function createGameGridAndGridObject() {
+        let gridArray = []    
+        let id = 0
+            for (let i = 1; i <= 10; i++) {
+                let rowEl = document.createElement('div');
+                rowEl.className = "row";
+                gameboardEl.appendChild(rowEl);
+                for (let j = 1; j <= 10; j++) {
+                    let squareEl = document.createElement('div');
+                    squareEl.className = "square";
+                    id++
+                    squareEl.id = id;
+                    rowEl.appendChild(squareEl)
+                    gridArray.push({row: i, col: j}) 
+                };
+            };
+        console.log(gridArray)
+    };
 
     initialize();
 
