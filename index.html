@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <title>Document</title>
+
+
+    <style>
+        body {
+            width: 98vw;
+            height: 97vh;
+            position: relative;
+            background-color: #002444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            
+        }
+
+        #logo {
+            position: absolute;
+            left: 1%;
+            top: 1%;
+            height: 15%;
+        }
+
+        #gameboard {
+            height: 90%;
+            aspect-ratio: 1 / 1;
+            background-color: rgb(10, 175, 48);
+        };
+
+        .button {
+            margin-top: 3%;
+        }
+
+        .row {
+            height: 10%;
+            border: solid black 1px;
+            background-color: blueviolet;
+        };
+    </style>
+
+
+</head>
+
+
+<body>
+    <img src="assets/battle-of-ships-logo.png" id="logo">
+</body>
+
+
+<script>
+    console.log('script working');
+
+    const bodyEl = document.body
+    console.log(bodyEl)
+
+
+    function initialize() {
+        clear()
+        createGameboard();
+    };
+
+    function clear() {
+        //clear the body element but leave the logo
+        const elementsToRemove = bodyEl.querySelectorAll(':not(#logo)');
+        elementsToRemove.forEach(element => element.remove());
+    }
+
+    function createGameboard() {
+        const gameboard = document.createElement('div');
+        gameboard.id = "gameboard";
+        bodyEl.appendChild(gameboard);
+
+    }
+
+    initialize();
+
+</script>
+
+
+</html>
