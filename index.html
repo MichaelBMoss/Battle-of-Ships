@@ -37,24 +37,19 @@
         #gameboard {
             height: 90%;
             aspect-ratio: 1 / 1;
-            background-color: rgb(10, 175, 48);
-        }
-
-        .button {
-            margin-top: 3%;
+            background-image: url('assets/gameboard-background.png');
+            background-size: cover;
         }
 
         .row {
             height: 10%;
-            border: solid black 1px;
-            background-color: blueviolet;
         }
 
         .square {
             display: inline-block;
             height: 100%;
             width:10%;
-            border: black solid 1px;
+            border: rgba(0, 0, 0, .4) solid 1px;
             margin: -1px;
         }
 
@@ -74,11 +69,23 @@
 
     const bodyEl = document.body
     let gameboardEl;
+    let gridArray;
+    let orientation;
+    let shipsquare;
+    let occupiedSquare;
+    const ships = [
+        {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
+        {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
+        {name: 'Submarine', size: 3, image: 'assets/submarine.png',},
+        {name: 'Cruiser', size: 3, image: 'assets/cruiser.png',},
+        {name: 'Destroyer', size: 2, image: 'assets/destroyer.png',},
+    ];
     
     function initialize() {
         clearBody();
         createGameboard();
         createGameGridAndGridObject();
+        placeShips();
     };
 
     function clearBody() {
@@ -94,8 +101,8 @@
     }
 
     function createGameGridAndGridObject() {
-        let gridArray = []    
-        let id = 0
+        gridArray = []    ;
+        let id = 0;
             for (let i = 1; i <= 10; i++) {
                 let rowEl = document.createElement('div');
                 rowEl.className = "row";
@@ -103,17 +110,51 @@
                 for (let j = 1; j <= 10; j++) {
                     let squareEl = document.createElement('div');
                     squareEl.className = "square";
-                    id++
+                    id++;
                     squareEl.id = id;
-                    rowEl.appendChild(squareEl)
-                    gridArray.push({row: i, col: j}) 
+                    rowEl.appendChild(squareEl);
+                    gridArray.push({row: i, col: j, 'shipInSquare': 'none',});
+                    squareEl.addEventListener('click', () => {
+                        gameoardClick(squareEl);
+                    }); 
                 };
             };
         console.log(gridArray)
     };
 
-    initialize();
+    function placeShips() {
+        for (let ship of ships) {
+            setOrientation();
+            place(ship);
+        };
+        console.log(gridArray);
+    };
 
+    function setOrientation() {
+        let random0to1 = Math.floor(Math.random() * 2);
+        if (random0to1 == 0) { 
+            orientation = "vertical";
+        };
+        if (random0to1 == 1) { 
+            orientation = "horizontal";
+        };
+    }
+
+    function place(ship) {
+        let random1to100 = Math.floor(Math.random() * 100);
+        while (gridArray[random1to100].shipInSquare !== 'none') {
+            random1to100 = Math.floor(Math.random() * 100);
+        };
+        occupiedSquare = gridArray[random1to100];
+        occupiedSquare.shipInSquare = ship.name;
+    };
+
+    function gameoardClick(squareEl) {
+        console.log(gridArray[squareEl.id]);
+    };
+
+
+    initialize();
 </script>
 
 
