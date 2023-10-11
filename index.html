@@ -69,10 +69,14 @@
 
     const bodyEl = document.body
     let gameboardEl;
-    let gridArray;
+    let gridObject;
     let orientation;
-    let shipsquare;
-    let occupiedSquare;
+    let firstSquare;
+    let colNum;
+    let rowNum;
+    let randRow;
+    let randCol;
+    let noneCount;
     const ships = [
         {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
         {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
@@ -101,56 +105,86 @@
     }
 
     function createGameGridAndGridObject() {
-        gridArray = []    ;
-        let id = 0;
-            for (let i = 1; i <= 10; i++) {
-                let rowEl = document.createElement('div');
-                rowEl.className = "row";
-                gameboardEl.appendChild(rowEl);
-                for (let j = 1; j <= 10; j++) {
-                    let squareEl = document.createElement('div');
-                    squareEl.className = "square";
-                    id++;
-                    squareEl.id = id;
-                    rowEl.appendChild(squareEl);
-                    gridArray.push({row: i, col: j, 'shipInSquare': 'none',});
-                    squareEl.addEventListener('click', () => {
-                        gameoardClick(squareEl);
-                    }); 
-                };
-            };
-        console.log(gridArray)
+    gridObject = {};
+    let id = 0;
+    for (let i = 1; i <= 10; i++) {
+        let rowEl = document.createElement('div');
+        rowEl.className = "row";
+        gameboardEl.appendChild(rowEl);
+        gridObject[i] = {};
+        for (let j = 1; j <= 10; j++) {
+            let squareEl = document.createElement('div');
+            squareEl.className = "square";
+            id++;
+            squareEl.id = id;
+            rowEl.appendChild(squareEl);
+            gridObject[i][j] = 'none';
+            squareEl.addEventListener('click', () => {
+                gameboardClick(i, j);
+            }); 
+        };
     };
+    //console.log(gridObject);
+};
 
     function placeShips() {
         for (let ship of ships) {
-            setOrientation();
-            place(ship);
+            findOpenSpot(ship);
         };
-        console.log(gridArray);
     };
 
     function setOrientation() {
         let random0to1 = Math.floor(Math.random() * 2);
         if (random0to1 == 0) { 
             orientation = "vertical";
-        };
-        if (random0to1 == 1) { 
+        } else if (random0to1 == 1) { 
             orientation = "horizontal";
         };
     }
 
-    function place(ship) {
-        let random1to100 = Math.floor(Math.random() * 100);
-        while (gridArray[random1to100].shipInSquare !== 'none') {
-            random1to100 = Math.floor(Math.random() * 100);
+    function findOpenSpot(ship) {
+        setOrientation();
+        if (orientation == 'vertical') {
+            randRow = Math.floor(Math.random() * (10 - ship.size) + 1);
+            randCol = Math.floor(Math.random() * 10 + 1);
+        } else if (orientation == 'horizontal') {
+            randCol = Math.floor(Math.random() * (10 - ship.size) + 1);
+            randRow = Math.floor(Math.random() * 10 + 1);
         };
-        occupiedSquare = gridArray[random1to100];
-        occupiedSquare.shipInSquare = ship.name;
+        noneCount = 0;
+        if (orientation == 'vertical') {
+            for (let k = 0; k < ship.size; k++) {
+                if (gridObject[randRow + k][randCol] == 'none') {
+                noneCount++
+                };
+            };
+            if (ship.size == noneCount++) {
+                for (let m = 0; m < ship.size; m++) {
+                    gridObject[randRow + m][randCol] = ship.name;
+                }
+            } else {
+                findOpenSpot(ship);
+            };
+        };
+        if (orientation == 'horizontal') {
+            for (let w = 0; w < ship.size; w++) {
+                if (gridObject[randRow][randCol + w] == 'none') {
+                noneCount++
+                };
+            };
+            if (ship.size == noneCount++) {
+                for (let b = 0; b < ship.size; b++) {
+                    gridObject[randRow][randCol + b] = ship.name;
+                };
+            } else {
+                findOpenSpot(ship);
+            };   
+        };
+        console.log(gridObject);
     };
 
-    function gameoardClick(squareEl) {
-        console.log(gridArray[squareEl.id]);
+    function gameboardClick(squareEl) {
+
     };
 
 
