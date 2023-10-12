@@ -8,13 +8,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+
     <title>Document</title>
 
     <style>
         body {
-            background-color: #0332ac;
+            background-image: url('assets/fleet-background.jpg');
+            background-size: cover;
             width: 99vw;
             height: 97vh;
+            color: #298925;
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 22px;
+        }
+
+        p {
+            margin-right: 10%;
+            margin-left: 10%;
         }
 
         #entire {
@@ -40,7 +53,7 @@
         }
 
         #logo {
-            width: 90%;
+            width: 100%;
         }
 
         #main-section {
@@ -55,17 +68,24 @@
             border-radius: 5%;;
             border: solid 5px silver;
             width: 25%;
-            height: 50%;
-            margin-left: 4%;
+            height: 60%;
+            margin-left: 2%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        #shots-left {
+            font-size: 40px;
         }
 
         #gameboard {
-            height: 70%;
+            height: 80%;
             aspect-ratio: 1 / 1;
             background-image: url('assets/gameboard-background.png');
             background-size: cover;
-            margin-right: 1%;
-            margin-left: 1%;
+            margin-right: 2%;
+            margin-left: 2%;
             border: solid 5px silver;
         }
 
@@ -86,7 +106,7 @@
             border-radius: 5%;;
             border: solid 5px silver;
             width: 20%;
-            height: 50%;
+            height: 60%;
         }
 
     </style>
@@ -111,10 +131,11 @@
 
     const mainEl = document.getElementById('main-section')
     console.log(mainEl)
+    let infoPanelEl;
     let gameboardEl;
+    let shipPanelEl
     let gridObject;
     let orientation;
-    let firstSquare;
     let colNum;
     let rowNum;
     let randRow;
@@ -130,7 +151,8 @@
     
     function initialize() {
         createMainSectionStructure();
-        createGameGridAndGridObject();
+        fillInfoPanel();
+        fillGameGridAndGridObject();
         placeShips();
     };
 
@@ -141,38 +163,43 @@
 
     function createMainSectionStructure() {
         clearMainSectionEl();
-        let infoPanel = document.createElement('div');
-        infoPanel.id = "info-panel";
-        mainEl.appendChild(infoPanel);
+        infoPanelEl = document.createElement('div');
+        infoPanelEl.id = "info-panel";
+        mainEl.appendChild(infoPanelEl);
         gameboardEl = document.createElement('div');
         gameboardEl.id = "gameboard";
         mainEl.appendChild(gameboardEl);
-        let shipPanel = document.createElement('div')
-        shipPanel.id = "ship-panel";
-        mainEl.appendChild(shipPanel);
+        shipPanelEl = document.createElement('div')
+        shipPanelEl.id = "ship-panel";
+        mainEl.appendChild(shipPanelEl);
     };
 
-    function createGameGridAndGridObject() {
-    gridObject = {};
-    let id = 0;
-    for (let i = 1; i <= 10; i++) {
-        let rowEl = document.createElement('div');
-        rowEl.className = "row";
-        gameboardEl.appendChild(rowEl);
-        gridObject[i] = {};
-        for (let j = 1; j <= 10; j++) {
-            let squareEl = document.createElement('div');
-            squareEl.className = "square";
-            id++;
-            squareEl.id = id;
-            rowEl.appendChild(squareEl);
-            gridObject[i][j] = 'none';
-            squareEl.addEventListener('click', () => {
-                gameboardClick(i, j);
-            }); 
+    function fillInfoPanel() {
+    infoPanelEl.innerHTML = "<p>Try to find and destroy the enemy fleet</p>" +
+        "<p>You have <span id='shots-left'>40</span> shots left</p>";
+    }
+
+    function fillGameGridAndGridObject() {
+        gridObject = {};
+        let id = 0;
+        for (let i = 1; i <= 10; i++) {
+            let rowEl = document.createElement('div');
+            rowEl.className = "row";
+            gameboardEl.appendChild(rowEl);
+            gridObject[i] = {};
+            for (let j = 1; j <= 10; j++) {
+                let squareEl = document.createElement('div');
+                squareEl.className = "square";
+                id++;
+                squareEl.id = id;
+                rowEl.appendChild(squareEl);
+                gridObject[i][j] = 'none';
+                squareEl.addEventListener('click', () => {
+                    gameboardClick(i, j);
+                }); 
+            };
         };
     };
-};
 
     function placeShips() {
         for (let ship of ships) {
