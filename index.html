@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 
-
 <html lang="en">
 
-
 <head>
-
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,32 +10,63 @@
  
     <title>Document</title>
 
-
     <style>
         body {
-            width: 98vw;
+            background-color: blue;
+            width: 99vw;
             height: 97vh;
-            position: relative;
-            background-color: #002444;
+        }
+
+        #entire {
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        #left-side-section {
+            width: 8%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            color: white;
+        }
+
+        #logo-div {
+            width: 100%;
+            height: 20%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #logo {
-            position: absolute;
-            left: 1%;
-            top: 1%;
-            height: 15%;
+            width: 90%;
+        }
+
+        #main-section {
+            width: 90%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #info-panel {
+            background-color: #1f1f1f;
+            border-radius: 5%;;
+            border: solid 5px silver;
+            width: 25%;
+            height: 50%;
+            margin-left: 4%;
         }
 
         #gameboard {
-            height: 90%;
+            height: 70%;
             aspect-ratio: 1 / 1;
             background-image: url('assets/gameboard-background.png');
             background-size: cover;
+            margin-right: 1%;
+            margin-left: 1%;
+            border: solid 5px silver;
         }
 
         .row {
@@ -53,21 +81,36 @@
             margin: -1px;
         }
 
+        #ship-panel {
+            background-color: #1f1f1f;
+            border-radius: 5%;;
+            border: solid 5px silver;
+            width: 20%;
+            height: 50%;
+        }
+
     </style>
-
-
 </head>
 
 
 <body>
-    <img src="assets/battle-of-ships-logo.png" id="logo">
+    <div id="entire">
+        <div id="left-side-section">
+            <div id="logo-div">
+                <img id="logo" src="assets/battle-of-ships-logo.png">
+            </div>
+        </div>
+        <div id="main-section"></div>
+    </div>
 </body>
 
 
 <script>
+
     console.log('script working');
 
-    const bodyEl = document.body
+    const mainEl = document.getElementById('main-section')
+    console.log(mainEl)
     let gameboardEl;
     let gridObject;
     let orientation;
@@ -86,23 +129,28 @@
     ];
     
     function initialize() {
-        clearBody();
-        createGameboard();
+        createMainSectionStructure();
         createGameGridAndGridObject();
         placeShips();
     };
 
-    function clearBody() {
-        //clear the body element but leave the logo
-        const elementsToRemove = bodyEl.querySelectorAll(':not(#logo)');
-        elementsToRemove.forEach(element => element.remove());
+    function clearMainSectionEl() {
+        const mainContents = mainEl.querySelectorAll('*');
+        mainContents.forEach(element => element.remove());
     }
 
-    function createGameboard() {
+    function createMainSectionStructure() {
+        clearMainSectionEl();
+        let infoPanel = document.createElement('div');
+        infoPanel.id = "info-panel";
+        mainEl.appendChild(infoPanel);
         gameboardEl = document.createElement('div');
         gameboardEl.id = "gameboard";
-        bodyEl.appendChild(gameboardEl);
-    }
+        mainEl.appendChild(gameboardEl);
+        let shipPanel = document.createElement('div')
+        shipPanel.id = "ship-panel";
+        mainEl.appendChild(shipPanel);
+    };
 
     function createGameGridAndGridObject() {
     gridObject = {};
@@ -124,7 +172,6 @@
             }); 
         };
     };
-    //console.log(gridObject);
 };
 
     function placeShips() {
@@ -189,7 +236,7 @@
 
 
     initialize();
-</script>
 
+</script>
 
 </html>
