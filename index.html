@@ -23,50 +23,49 @@
         }
 
         #info-panel p {
-            margin-right: 10%;
-            margin-left: 16%;
+            margin-right: 10px;
+            margin-left:25px;
         }
 
         #entire {
-            width: 100%;
-            height: 100%;
+            width: 1350px;
+            height: 540px;
             display: flex;
         }
 
         #left-side-section {
-            width: 8%;
-            height: 100%;
+            width: 90px;;
+            height: 550px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         #logo-div {
-            width: 100%;
-            height: 20%;
+            width: 86px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         #logo {
-            width: 100%;
+            width: 86px;
         }
 
         #main-section {
-            width: 90%;
-            height: 100%;
+            width: 1300px;
+            height: 550px;
             display: flex;
             align-items: center;
         }
 
         #info-panel {
             background-color: #1f1f1f;
-            border-radius: 5%;;
+            border-radius: 10px;
             border: solid 5px silver;
-            width: 20%;
-            height: 40%;
-            margin-left: 2%;
+            width: 250px;
+            height: 200px;
+            margin-left: 70px;
             color: #298925;
             font-family: 'Pixelify Sans', sans-serif;
             font-size: 20px;
@@ -74,37 +73,36 @@
 
         #shots-left {
             font-size: 40px;
-            margin-left: 55px;;
+            margin-left: 70px;;
         }
 
         #gameboard {
-            height: 80%;
+            height: 460px;
             aspect-ratio: 1 / 1;
             background-image: url('assets/gameboard-background.png');
             background-size: cover;
-            margin-right: 2%;
-            margin-left: 2%;
-            border: solid 5px silver;
+            margin-right: 30px;
+            margin-left: 30px;
+            border: solid 7px silver;
         }
 
         .row {
-            height: 10%;
+            height: 46px;
         }
 
         .square {
             display: inline-block;
-            height: 100%;
-            width:10%;
+            height: 44px;
+            width: 44px;
             border: rgba(0, 0, 0, .4) solid 1px;
-            margin: -1px;
         }
 
         #ship-panel {
             background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 5%;;
+            border-radius: 10px;;
             border: solid 5px silver;
-            width: 25%;
-            height: 80%;
+            width: 350px;
+            height: 440px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -113,7 +111,6 @@
 
         .ship-image {
             height: 65px;
-
         }
 
         .ship-image-div {
@@ -133,7 +130,7 @@
             margin-right: 10px;
         };
 
-
+        
     </style>
 </head>
 
@@ -155,7 +152,6 @@
     console.log('script working');
 
     const mainEl = document.getElementById('main-section')
-    console.log(mainEl)
     let infoPanelEl;
     let gameboardEl;
     let shipPanelEl
@@ -172,6 +168,7 @@
     let shipNameP;
     let shipSizeP;
     let shotsLeft;
+    let redOverlayDiv;
     const ships = [
         {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
         {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
@@ -296,22 +293,7 @@
 
     function fillShipPanel() {
         for (let ship of ships) {
-            shipImage = document.createElement('img');
-            shipImage.src = ship.image;
-            shipImage.className = 'ship-image';
-            shipImageDiv = document.createElement('div');
-            shipImageDiv.className = 'ship-image-div';
-            shipDescriptionDiv = document.createElement('div');
-            shipDescriptionDiv.className = 'ship-description-div';
-            shipNameP = document.createElement('p');
-            shipNameP.innerText = ship.name;
-            shipSizeP = document.createElement('p');
-            shipSizeP.innerText = 'Size: ' + ship.size;
-            shipPanelEl.appendChild(shipDescriptionDiv);
-            shipPanelEl.appendChild(shipImageDiv);
-            shipDescriptionDiv.appendChild(shipNameP);
-            shipDescriptionDiv.appendChild(shipSizeP);
-            shipImageDiv.appendChild(shipImage);
+
         };
 
     };
