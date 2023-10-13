@@ -79,7 +79,6 @@ function fillGameGridAndObjects() {
     //reset the grid object and some variables
     sunkShipsCount = 0;
     gridObject = {};
-    let id = 0;
     //iterate the creation of 10 rows
     for (let rowNum = 1; rowNum <= 10; rowNum++) {
         let rowEl = document.createElement('div');
@@ -91,8 +90,6 @@ function fillGameGridAndObjects() {
         for (let colNum = 1; colNum <= 10; colNum++) {
             let squareEl = document.createElement('div');
             squareEl.className = "square";
-            id++;
-            squareEl.id = id;
             rowEl.appendChild(squareEl);
             //give each entry row in the grid object an entry for each of its squares
             //set each square to none. some will be filled with ships later.
