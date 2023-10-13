@@ -36,7 +36,7 @@
 
         #info-panel p {
             margin-right: 10px;
-            margin-left:25px;
+            margin-left: 25px;
         }
 
         #entire {
@@ -77,7 +77,7 @@
             border: solid 5px silver;
             width: 250px;
             height: 200px;
-            margin-left: 70px;
+            margin-left: 50px;
             color: #298925;
             font-family: 'Pixelify Sans', sans-serif;
             font-size: 20px;
@@ -143,6 +143,11 @@
             margin-right: 10px;
         };
 
+        .explosion {
+            background-image: url('assets/explosion.jpg');
+            background-size: cover;
+            background-position: center;
+        }
 
     </style>
 </head>
@@ -157,6 +162,10 @@
         </div>
         <div id="main-section"></div>
     </div>
+
+    <audio id="splash" preload="auto">
+        <source src="splash.wav" type="audio/wav">
+    </audio>
 </body>
 
 
@@ -165,13 +174,13 @@
     console.log('script working');
 
     const mainEl = document.getElementById('main-section')
+    let shotsLeft = 40;
     let infoPanelEl;
     let gameboardEl;
     let shipPanelEl
     let gridObject;
+    let hitListObject;
     let orientation;
-    let colNum;
-    let rowNum;
     let randRow;
     let randCol;
     let noneCount;
@@ -180,8 +189,9 @@
     let shipDescriptionDiv;
     let shipNameP;
     let shipSizeP;
-    let shotsLeft;
     let redOverlayDiv;
+    let clickedSquareID;
+    let clickedSquare;
     const ships = [
         {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
         {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
@@ -193,7 +203,7 @@
     function initialize() {
         createMainSectionStructure();
         fillInfoPanel();
-        fillGameGridAndGridObject();
+        fillGameGridAndObjects();
         placeShips();
         fillShipPanel();
     };
@@ -221,24 +231,25 @@
     }
 
 
-    function fillGameGridAndGridObject() {
+    function fillGameGridAndObjects() {
+        hitListObject = {};
         gridObject = {};
         let id = 0;
-        for (let i = 1; i <= 10; i++) {
+        for (let rowNum = 1; rowNum <= 10; rowNum++) {
             let rowEl = document.createElement('div');
             rowEl.className = "row";
             gameboardEl.appendChild(rowEl);
-            gridObject[i] = {};
-            for (let j = 1; j <= 10; j++) {
+            gridObject[rowNum] = {};
+            for (let colNum = 1; colNum <= 10; colNum++) {
                 let squareEl = document.createElement('div');
                 squareEl.className = "square";
                 id++;
                 squareEl.id = id;
                 rowEl.appendChild(squareEl);
-                gridObject[i][j] = 'none';
-                squareEl.addEventListener('click', () => {
-                    gameboardClick(i, j);
-                }); 
+                gridObject[rowNum][colNum] = 'none';
+                squareEl.addEventListener('click', (event) => {
+                gameboardClick(rowNum, colNum);
+                });
             };
         };
     };
@@ -329,10 +340,33 @@
 
     };
 
-    function gameboardClick(squareEl) {
-
+    function gameboardClick(rowNum, colNum) {
+        clickedSquare = event.target
+        if (gridObject[rowNum][colNum] == 'none') {
+            miss(rowNum, colNum, clickedSquare)
+        } else if (gridObject[rowNum][colNum] != 'none' && (gridObject[rowNum][colNum] != 'closed')) {
+            hit(rowNum, colNum, clickedSquare);
+        }
+        checkGameStatus();
     };
 
+    function miss(rowNum, colNum, clickedSquare) {
+        console.log('miss');
+        gridObject[rowNum][colNum] = 'closed';
+        clickedSquare.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        shotsLeft--;
+        console.log(shotsLeft);
+    };
+
+    function hit(rowNum, colNum, clickedSquare) {
+        console.log('hit');
+        hitShip = gridObject[rowNum][colNum];
+        console.log(hitShip);
+    }
+
+    function checkGameStatus() {
+
+    };
 
     initialize();
 
