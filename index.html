@@ -25,7 +25,7 @@
             font-size: 22px;
         }
 
-        p {
+        #info-panel p {
             margin-right: 10%;
             margin-left: 10%;
         }
@@ -68,7 +68,7 @@
             border-radius: 5%;;
             border: solid 5px silver;
             width: 25%;
-            height: 60%;
+            height: 50%;
             margin-left: 2%;
             display: flex;
             flex-direction: column;
@@ -102,11 +102,24 @@
         }
 
         #ship-panel {
-            background-color: #1f1f1f;
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 5%;;
             border: solid 5px silver;
-            width: 20%;
-            height: 60%;
+            width: 25%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ship-image {
+            height: 65px;
+
+        }
+
+        .ship-image-div {
+            display: flex;
+            justify-content: space-around;
         }
 
     </style>
@@ -141,6 +154,10 @@
     let randRow;
     let randCol;
     let noneCount;
+    let shipImageDiv;
+    let shipImage;
+    let shipDescriptionDiv
+    let shipDescriptionP
     const ships = [
         {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
         {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
@@ -154,6 +171,7 @@
         fillInfoPanel();
         fillGameGridAndGridObject();
         placeShips();
+        fillShipPanel();
     };
 
     function clearMainSectionEl() {
@@ -216,8 +234,7 @@
         };
     }
 
-    function findOpenSpot(ship) {
-        setOrientation();
+    function getRandoms(ship) {
         if (orientation == 'vertical') {
             randRow = Math.floor(Math.random() * (10 - ship.size) + 1);
             randCol = Math.floor(Math.random() * 10 + 1);
@@ -225,6 +242,11 @@
             randCol = Math.floor(Math.random() * (10 - ship.size) + 1);
             randRow = Math.floor(Math.random() * 10 + 1);
         };
+    }
+
+    function findOpenSpot(ship) {
+        setOrientation();
+        getRandoms(ship);
         noneCount = 0;
         if (orientation == 'vertical') {
             for (let k = 0; k < ship.size; k++) {
@@ -255,6 +277,21 @@
             };   
         };
         console.log(gridObject);
+    };
+
+
+    function fillShipPanel() {
+        for (let ship of ships) {
+            shipImage = document.createElement('img');
+            shipImage.src = ship.image;
+            shipImage.className = 'ship-image';
+            shipImageDiv = document.createElement('div');
+            shipImageDiv.className = 'ship-image-div';
+
+            shipPanelEl.appendChild(shipImageDiv);
+            shipImageDiv.appendChild(shipImage);
+        };
+
     };
 
     function gameboardClick(squareEl) {
