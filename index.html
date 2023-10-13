@@ -20,14 +20,11 @@
             background-size: cover;
             width: 99vw;
             height: 97vh;
-            color: #298925;
-            font-family: 'Pixelify Sans', sans-serif;
-            font-size: 22px;
         }
 
         #info-panel p {
             margin-right: 10%;
-            margin-left: 10%;
+            margin-left: 16%;
         }
 
         #entire {
@@ -67,16 +64,17 @@
             background-color: #1f1f1f;
             border-radius: 5%;;
             border: solid 5px silver;
-            width: 25%;
-            height: 50%;
+            width: 20%;
+            height: 40%;
             margin-left: 2%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
+            color: #298925;
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 20px;
         }
 
         #shots-left {
             font-size: 40px;
+            margin-left: 55px;;
         }
 
         #gameboard {
@@ -102,7 +100,7 @@
         }
 
         #ship-panel {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.3);
             border-radius: 5%;;
             border: solid 5px silver;
             width: 25%;
@@ -110,6 +108,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            font: arial;
         }
 
         .ship-image {
@@ -120,7 +119,20 @@
         .ship-image-div {
             display: flex;
             justify-content: space-around;
+            margin-bottom: 10px;
         }
+
+        .ship-description-div {
+            font-size: 14px;
+            height: 10px;
+            color: black;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-left: 10px;
+            margin-right: 10px;
+        };
+
 
     </style>
 </head>
@@ -156,8 +168,10 @@
     let noneCount;
     let shipImageDiv;
     let shipImage;
-    let shipDescriptionDiv
-    let shipDescriptionP
+    let shipDescriptionDiv;
+    let shipNameP;
+    let shipSizeP;
+    let shotsLeft;
     const ships = [
         {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
         {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
@@ -193,9 +207,9 @@
     };
 
     function fillInfoPanel() {
-    infoPanelEl.innerHTML = "<p>Try to find and destroy the enemy fleet</p>" +
-        "<p>You have <span id='shots-left'>40</span> shots left</p>";
+    infoPanelEl.innerHTML = "<p>Find And Destroy The Enemy Fleet:<br><br><span id='shots-left'>40</span><br><br>Shots Remaining</p>";
     }
+
 
     function fillGameGridAndGridObject() {
         gridObject = {};
@@ -287,8 +301,16 @@
             shipImage.className = 'ship-image';
             shipImageDiv = document.createElement('div');
             shipImageDiv.className = 'ship-image-div';
-
+            shipDescriptionDiv = document.createElement('div');
+            shipDescriptionDiv.className = 'ship-description-div';
+            shipNameP = document.createElement('p');
+            shipNameP.innerText = ship.name;
+            shipSizeP = document.createElement('p');
+            shipSizeP.innerText = 'Size: ' + ship.size;
+            shipPanelEl.appendChild(shipDescriptionDiv);
             shipPanelEl.appendChild(shipImageDiv);
+            shipDescriptionDiv.appendChild(shipNameP);
+            shipDescriptionDiv.appendChild(shipSizeP);
             shipImageDiv.appendChild(shipImage);
         };
 
