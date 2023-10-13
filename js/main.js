@@ -59,11 +59,11 @@ function fillInfoPanel() {
 function fillGameGridAndObjects() {
     //fill the ship object by hand
     ships = [
-    {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0, id: 'aircraft-carrier'},
-    {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0, id: 'battleship'},
-    {name: 'Submarine', size: 3, image: 'assets/submarine.png', damage: 0, id: 'submarine'},
-    {name: 'Cruiser', size: 3, image: 'assets/cruiser.png', damage: 0, id: 'cruiser'},
-    {name: 'Destroyer', size: 2, image: 'assets/destroyer.png', damage: 0, id: 'destroyer'},
+    {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0, tag: 'aircraft-carrier'},
+    {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0, tag: 'battleship'},
+    {name: 'Submarine', size: 3, image: 'assets/submarine.png', damage: 0, tag: 'submarine'},
+    {name: 'Cruiser', size: 3, image: 'assets/cruiser.png', damage: 0, tag: 'cruiser'},
+    {name: 'Destroyer', size: 2, image: 'assets/destroyer.png', damage: 0, tag: 'destroyer'},
     ];
     //reset the grid object and some variables
     sunkShipsCount = 0;
@@ -137,7 +137,7 @@ function findOpenSpot(ship) {
         //if the size of the ship is equal to the empty squares, write it into all of them.
         if (ship.size == noneCount) {
             for (let m = 0; m < ship.size; m++) {
-                gridObject[randRow + m][randCol] = ship.id;
+                gridObject[randRow + m][randCol] = ship.tag;
             }
         } else {
             findOpenSpot(ship);
@@ -151,7 +151,7 @@ function findOpenSpot(ship) {
         };
         if (ship.size == noneCount) {
             for (let b = 0; b < ship.size; b++) {
-                gridObject[randRow][randCol + b] = ship.id;
+                gridObject[randRow][randCol + b] = ship.tag;
             };
         } else {
             findOpenSpot(ship);
@@ -163,24 +163,23 @@ function findOpenSpot(ship) {
 // include empty divs over the ships to be filled with transparent red overlay when they are sunk
 function fillShipPanel() {
     for (const ship of ships) {
+        const shipImageDiv = document.createElement('div');
+        shipImageDiv.className = 'ship-image-div';
         const shipImage = document.createElement('img');
         shipImage.src = ship.image;
         shipImage.className = 'ship-image';
-        const shipImageDiv = document.createElement('div');
-        shipImageDiv.className = 'ship-image-div';
-        shipImageDiv.id = ship.id;
-        const shipDescriptionDiv = document.createElement('div');
-        shipDescriptionDiv.className = 'ship-description-div';
         const shipNameP = document.createElement('p');
         shipNameP.innerText = ship.name;
+        shipNameP.className = 'ship-name-p';
         const shipSizeP = document.createElement('p');
         shipSizeP.innerText = 'Size: ' + ship.size;
+        shipSizeP.classList = 'ship-size-p';
         const redOverlayDiv = document.createElement('div');
         redOverlayDiv.className = "red-overlay-div";
-        shipPanelEl.appendChild(shipDescriptionDiv);
+        redOverlayDiv.id = ship.tag;
         shipPanelEl.appendChild(shipImageDiv);
-        shipDescriptionDiv.appendChild(shipNameP);
-        shipDescriptionDiv.appendChild(shipSizeP);
+        shipImageDiv.appendChild(shipNameP);
+        shipImageDiv.appendChild(shipSizeP);
         shipImageDiv.appendChild(shipImage);
         shipImageDiv.appendChild(redOverlayDiv);
     };
@@ -189,6 +188,7 @@ function fillShipPanel() {
 
 function gameboardClick(rowNum, colNum) {
     const clickedSquare = event.target
+    console.log(clickedSquare);
     if (gridObject[rowNum][colNum] == 'none') {
         miss(rowNum, colNum, clickedSquare);
     } else if (gridObject[rowNum][colNum] != 'none' && (gridObject[rowNum][colNum] != 'closed')) {
@@ -215,7 +215,7 @@ function hit(rowNum, colNum, clickedSquare) {
     shotsLeft--;
     //if there a hit, check if any ships have been sunk
     for (const ship of ships) {
-        if (hitShip == ship.id) {
+        if (hitShip == ship.tag) {
             ship.damage++
             sinkCheck(ship);
         }
@@ -235,7 +235,7 @@ function sinkCheck(ship) {
 
 function shipSink(ship) {
     sink.play();
-    const sunkShip = document.getElementById(ship.id);
+    const sunkShip = document.getElementById(ship.tag);
     // add the red overlay
     sunkShip.classList.add('red');
     sunkShipsCount++;

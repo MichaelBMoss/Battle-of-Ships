@@ -1,3 +1,15 @@
+.ship-name-p {
+    position: absolute;
+    left: 4px;
+    top: -10px;
+}
+
+.ship-size-p {
+    position: absolute;
+    right: 4px;
+    top: -10px;
+}
+
 #start-over {
     position: absolute;
     left: 634px;
@@ -19,8 +31,9 @@
 
 .red-overlay-div {
     position: absolute;
-    height: 85px;
-    width: 350px;
+    height: 86px;
+    width: 248px;
+ 
 }
 
 .red {
@@ -111,7 +124,7 @@ body {
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     border: solid 5px silver;
-    width: 350px;
+    width: 250px;
     height: 440px;
     display: flex;
     flex-direction: column;
@@ -121,22 +134,14 @@ body {
 
 .ship-image {
     height: 65px;
+    margin-top: 10px;
 }
 
 .ship-image-div {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 10px;
     position: relative;
+    height: 88px;
+    border: solid 1px black;
+    font-size: 13px;
 }
-
-.ship-description-div {
-    font-size: 14px;
-    height: 10px;
-    color: black;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 10px;
-    margin-right: 10px;
-};
