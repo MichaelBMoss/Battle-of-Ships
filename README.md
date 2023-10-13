@@ -8,6 +8,6 @@ Here are some screenshots...
 
 This game was made with HTML, CSS and Javascript. All sounds and imagery used in the game are free of copyright.
 
-Click here to play the game. It is self-explanatory, especially if you've played Battleship before.
+Click here https://michaelbmoss.github.io/Battle-of-Ships/ to play the game. It is self-explanatory, especially if you've played Battleship before.
 
 There are many ways to improve the game from here. It would be easy to add difficulty levels.
