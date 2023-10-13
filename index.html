@@ -15,6 +15,21 @@
     <title>Document</title>
 
     <style>
+        .test-div {
+            background-color: aqua;
+            height: 88px;
+            width: 350px;
+            position: relative;
+        }
+
+        .test-overlay {
+            position: absolute;
+            background-color: rgb(255, 0, 0, .5);
+            height: 88px;
+            width: 350px;
+        }
+        
+
         body {
             background-image: url('assets/fleet-background.jpg');
             background-size: cover;
@@ -99,7 +114,7 @@
 
         #ship-panel {
             background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;;
+            border-radius: 10px;
             border: solid 5px silver;
             width: 350px;
             height: 440px;
@@ -130,7 +145,7 @@
             margin-right: 10px;
         };
 
-        
+
     </style>
 </head>
 
@@ -293,7 +308,15 @@
 
     function fillShipPanel() {
         for (let ship of ships) {
-
+            let shipDiv = document.createElement('div');
+            shipDiv.className = 'ship-div';
+            shipPanelEl.appendChild(testDiv);
+            let testOverlay = document.createElement('div');
+            testOverlay.className = 'test-overlay';
+            testDiv.appendChild(testOverlay);
+            let testP = document.createElement('p');
+            testP.innerText = 'sfdsfdsfdsf';
+            testDiv.appendChild(testP);
         };
 
     };
