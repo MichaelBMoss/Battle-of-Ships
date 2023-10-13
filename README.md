@@ -10,4 +10,4 @@ This game was made with HTML, CSS and Javascript. All sounds and imagery used in
 
 Click here to play the game. It is self-explanatory, especially if you've played Battleship before.
 
-There are many ways to improve the game from here. It would be easy
+There are many ways to improve the game from here. It would be easy to add difficulty levels.
