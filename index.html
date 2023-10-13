@@ -19,6 +19,19 @@
 
     <style>
 
+        #start-over {
+            position: absolute;
+            left: 634px;
+            bottom: 100px;    
+        }
+
+        .win-lose {
+            position: absolute;
+            color: white;
+            font-size: 200px;
+            left: 100px;
+        }
+
         .explosion {
             background-image: url('assets/explosion.jpg');
             background-size: cover;
@@ -73,6 +86,7 @@
             height: 550px;
             display: flex;
             align-items: center;
+            position: relative;
         }
 
         #info-panel {
@@ -156,17 +170,21 @@
     <div id="entire">
         <div id="left-side-section">
             <div id="logo-div">
-                <img id="logo" src="assets/battle-of-ships-logo.png">
+                <img id="logo" src="assets/battle-of-ships-logo.png" onclick="initialize()">
             </div>
         </div>
         <div id="main-section"></div>
+        <button id="start-over" onclick="initialize()">Start Over</button>
     </div>
 
     <audio id="splash" preload="auto">
         <source src="assets/splash.wav" type="audio/wav">
     </audio>
     <audio id="boom" preload="auto">
-        <source src="assets/boom.wav" type="audio/wav">
+        <source src="assets/boom.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sink" preload="auto">
+        <source src="assets/sink.wav" type="audio/wav">
     </audio>
 </body>
 
@@ -175,11 +193,12 @@
 
     const splash = document.getElementById("splash");
     const boom = document.getElementById("boom");
+    const sink = document.getElementById("sink");
     const mainEl = document.getElementById('main-section')
-    let shotsLeft = 40;
+    let shotsLeft;
     let infoPanelEl;
     let gameboardEl;
-    let shipPanelEl
+    let shipPanelEl;
     let gridObject;
     let orientation;
     let randRow;
@@ -193,7 +212,8 @@
     let redOverlayDiv;
     let clickedSquareID;
     let clickedSquare;
-    let ships = []
+    let sunkShipsCount;
+    let ships = [];
     
     function initialize() {
         createMainSectionStructure();
@@ -209,6 +229,7 @@
     }
 
     function createMainSectionStructure() {
+        shotsLeft = 34;
         clearMainSectionEl();
         infoPanelEl = document.createElement('div');
         infoPanelEl.id = "info-panel";
@@ -237,13 +258,16 @@
 
     function fillGameGridAndObjects() {
         ships = [
-        {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0},
-        {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0},
-        {name: 'Submarine', size: 3, image: 'assets/submarine.png', damage: 0},
-        {name: 'Cruiser', size: 3, image: 'assets/cruiser.png', damage: 0},
-        {name: 'Destroyer', size: 2, image: 'assets/destroyer.png', damage: 0},
+        {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0, id: 'aircraft-carrier'},
+        {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0, id: 'battleship'},
+        {name: 'Submarine', size: 3, image: 'assets/submarine.png', damage: 0, id: 'submarine'},
+        {name: 'Cruiser', size: 3, image: 'assets/cruiser.png', damage: 0, id: 'cruiser'},
+        {name: 'Destroyer', size: 2, image: 'assets/destroyer.png', damage: 0, id: 'destroyer'},
         ];
+
+        sunkShipsCount = 0;
         gridObject = {};
+        console.log(gridObject);
         let id = 0;
         for (let rowNum = 1; rowNum <= 10; rowNum++) {
             let rowEl = document.createElement('div');
@@ -299,9 +323,9 @@
                 noneCount++
                 };
             };
-            if (ship.size == noneCount++) {
+            if (ship.size == noneCount) {
                 for (let m = 0; m < ship.size; m++) {
-                    gridObject[randRow + m][randCol] = ship.name;
+                    gridObject[randRow + m][randCol] = ship.id;
                 }
             } else {
                 findOpenSpot(ship);
@@ -313,9 +337,9 @@
                 noneCount++
                 };
             };
-            if (ship.size == noneCount++) {
+            if (ship.size == noneCount) {
                 for (let b = 0; b < ship.size; b++) {
-                    gridObject[randRow][randCol + b] = ship.name;
+                    gridObject[randRow][randCol + b] = ship.id;
                 };
             } else {
                 findOpenSpot(ship);
@@ -331,6 +355,7 @@
             shipImage.className = 'ship-image';
             shipImageDiv = document.createElement('div');
             shipImageDiv.className = 'ship-image-div';
+            shipImageDiv.id = ship.id;
             shipDescriptionDiv = document.createElement('div');
             shipDescriptionDiv.className = 'ship-description-div';
             shipNameP = document.createElement('p');
@@ -352,11 +377,10 @@
     function gameboardClick(rowNum, colNum) {
         clickedSquare = event.target
         if (gridObject[rowNum][colNum] == 'none') {
-            miss(rowNum, colNum, clickedSquare)
+            miss(rowNum, colNum, clickedSquare);
         } else if (gridObject[rowNum][colNum] != 'none' && (gridObject[rowNum][colNum] != 'closed')) {
             hit(rowNum, colNum, clickedSquare);
         }
-        checkGameStatus();
         let shotsLeftP = document.getElementById('shots-left'); 
         shotsLeftP.innerText = shotsLeft;
     };
@@ -366,18 +390,68 @@
         clickedSquare.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
         shotsLeft--;
         splash.play();
+        checkGameStatus();
     };
 
     function hit(rowNum, colNum, clickedSquare) {
         hitShip = gridObject[rowNum][colNum];
+        shotsLeft--;
+        for (let ship of ships) {
+            if (hitShip == ship.id) {
+                ship.damage++
+                sinkCheck(ship);
+            }
+        };
+        checkGameStatus();
         boom.play();
         gridObject[rowNum][colNum] = 'closed';
         clickedSquare.classList.add('explosion');
+    }
 
+    function sinkCheck(ship) {
+        if (ship.size == ship.damage) {
+            shipSink(ship);
+        };
+    }
+
+    function shipSink(ship) {
+        sink.play();
+        let sunkShip = document.getElementById(ship.id);
+        sunkShip.classList.add('red');
+        sunkShipsCount++;
+        checkGameStatus();
     }
 
     function checkGameStatus() {
+        if (sunkShipsCount >= 5) {
+            win();
+        } else if (shotsLeft <= 0) {
+            lose();
+        };
+    };
 
+    function lose() {
+        closeGameboard();
+        let youLose = document.createElement('p');
+        youLose.innerText = 'YOU LOSE!'
+        youLose.className = 'win-lose';
+        mainEl.appendChild(youLose);   
+    };
+
+    function win() {
+        closeGameboard();
+        let youWin = document.createElement('p');
+        youWin.innerText = 'YOU WIN!'
+        youWin.className = 'win-lose';
+        mainEl.appendChild(youWin);
+    };
+
+    function closeGameboard() {
+        for (let rowNum = 1; rowNum <= 10; rowNum++) {
+            for (let colNum = 1; colNum <= 10; colNum++) {
+                gridObject[rowNum][colNum] = 'closed';
+            };
+        };
     };
 
     initialize();
