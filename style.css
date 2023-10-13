@@ -1,0 +1,142 @@
+#start-over {
+    position: absolute;
+    left: 634px;
+    bottom: 100px;    
+}
+
+.win-lose {
+    position: absolute;
+    color: white;
+    font-size: 200px;
+    left: 100px;
+}
+
+.explosion {
+    background-image: url('assets/explosion.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.red-overlay-div {
+    position: absolute;
+    height: 85px;
+    width: 350px;
+}
+
+.red {
+    background-color: rgb(255, 0, 0, .5);
+}
+
+
+body {
+    background-image: url('assets/fleet-background.jpg');
+    background-size: cover;
+    width: 99vw;
+    height: 97vh;
+}
+
+#entire {
+    width: 1350px;
+    height: 540px;
+    display: flex;
+}
+
+#left-side-section {
+    width: 90px;;
+    height: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#logo-div {
+    width: 86px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#logo {
+    width: 86px;
+}
+
+#main-section {
+    width: 1300px;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#info-panel {
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    border: solid 5px silver;
+    width: 250px;
+    height: 200px;
+    margin-left: 50px;
+    color: #298925;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+#shots-left {
+    font-size: 40px;
+    margin-top: 0;
+}
+
+#gameboard {
+    height: 460px;
+    aspect-ratio: 1 / 1;
+    background-image: url('assets/gameboard-background.png');
+    background-size: cover;
+    margin-right: 30px;
+    margin-left: 30px;
+    border: solid 7px silver;
+}
+
+.row {
+    height: 46px;
+}
+
+.square {
+    display: inline-block;
+    height: 44px;
+    width: 44px;
+    border: rgba(0, 0, 0, .4) solid 1px;
+}
+
+#ship-panel {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    border: solid 5px silver;
+    width: 350px;
+    height: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font: arial;
+}
+
+.ship-image {
+    height: 65px;
+}
+
+.ship-image-div {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.ship-description-div {
+    font-size: 14px;
+    height: 10px;
+    color: black;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+};
