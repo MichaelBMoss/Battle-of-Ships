@@ -12,9 +12,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
 
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+
+
     <title>Document</title>
 
     <style>
+
+        .explosion {
+            background-image: url('assets/explosion.jpg');
+            background-size: cover;
+            background-position: center;
+        }
 
         .red-overlay-div {
             position: absolute;
@@ -32,11 +41,6 @@
             background-size: cover;
             width: 99vw;
             height: 97vh;
-        }
-
-        #info-panel p {
-            margin-right: 10px;
-            margin-left: 25px;
         }
 
         #entire {
@@ -81,11 +85,12 @@
             color: #298925;
             font-family: 'Pixelify Sans', sans-serif;
             font-size: 20px;
+            text-align: center;
         }
 
         #shots-left {
             font-size: 40px;
-            margin-left: 70px;;
+            margin-top: 0;
         }
 
         #gameboard {
@@ -143,12 +148,6 @@
             margin-right: 10px;
         };
 
-        .explosion {
-            background-image: url('assets/explosion.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
     </style>
 </head>
 
@@ -164,22 +163,24 @@
     </div>
 
     <audio id="splash" preload="auto">
-        <source src="splash.wav" type="audio/wav">
+        <source src="assets/splash.wav" type="audio/wav">
+    </audio>
+    <audio id="boom" preload="auto">
+        <source src="assets/boom.wav" type="audio/wav">
     </audio>
 </body>
 
 
 <script>
 
-    console.log('script working');
-
+    const splash = document.getElementById("splash");
+    const boom = document.getElementById("boom");
     const mainEl = document.getElementById('main-section')
     let shotsLeft = 40;
     let infoPanelEl;
     let gameboardEl;
     let shipPanelEl
     let gridObject;
-    let hitListObject;
     let orientation;
     let randRow;
     let randCol;
@@ -192,13 +193,7 @@
     let redOverlayDiv;
     let clickedSquareID;
     let clickedSquare;
-    const ships = [
-        {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png',},
-        {name: 'Battleship', size: 4, image: 'assets/battleship.png',},
-        {name: 'Submarine', size: 3, image: 'assets/submarine.png',},
-        {name: 'Cruiser', size: 3, image: 'assets/cruiser.png',},
-        {name: 'Destroyer', size: 2, image: 'assets/destroyer.png',},
-    ];
+    let ships = []
     
     function initialize() {
         createMainSectionStructure();
@@ -227,12 +222,27 @@
     };
 
     function fillInfoPanel() {
-    infoPanelEl.innerHTML = "<p>Find And Destroy The Enemy Fleet:<br><br><span id='shots-left'>40</span><br><br>Shots Remaining</p>";
+        let instructionsP = document.createElement('p');
+        instructionsP.innerText = 'Find And Destroy The Enemy Fleet';
+        infoPanelEl.appendChild(instructionsP);
+        let shotsMessage = document.createElement('p');
+        shotsMessage.innerText = "Shots Remaining:";
+        infoPanelEl.appendChild(shotsMessage);
+        let shotsLeftP = document.createElement('p');
+        shotsLeftP.id = 'shots-left';
+        shotsLeftP.innerText = shotsLeft;
+        infoPanelEl.appendChild(shotsLeftP);
+
     }
 
-
     function fillGameGridAndObjects() {
-        hitListObject = {};
+        ships = [
+        {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0},
+        {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0},
+        {name: 'Submarine', size: 3, image: 'assets/submarine.png', damage: 0},
+        {name: 'Cruiser', size: 3, image: 'assets/cruiser.png', damage: 0},
+        {name: 'Destroyer', size: 2, image: 'assets/destroyer.png', damage: 0},
+        ];
         gridObject = {};
         let id = 0;
         for (let rowNum = 1; rowNum <= 10; rowNum++) {
@@ -311,7 +321,6 @@
                 findOpenSpot(ship);
             };   
         };
-        console.log(gridObject);
     };
 
 
@@ -348,20 +357,23 @@
             hit(rowNum, colNum, clickedSquare);
         }
         checkGameStatus();
+        let shotsLeftP = document.getElementById('shots-left'); 
+        shotsLeftP.innerText = shotsLeft;
     };
 
     function miss(rowNum, colNum, clickedSquare) {
-        console.log('miss');
         gridObject[rowNum][colNum] = 'closed';
         clickedSquare.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
         shotsLeft--;
-        console.log(shotsLeft);
+        splash.play();
     };
 
     function hit(rowNum, colNum, clickedSquare) {
-        console.log('hit');
         hitShip = gridObject[rowNum][colNum];
-        console.log(hitShip);
+        boom.play();
+        gridObject[rowNum][colNum] = 'closed';
+        clickedSquare.classList.add('explosion');
+
     }
 
     function checkGameStatus() {
