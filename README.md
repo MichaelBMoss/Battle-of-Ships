@@ -2,7 +2,7 @@ This is a game called Battle Of Ships that I made as my first project in the Gen
 
 Here are some screenshots...
 
-(/battle-of-ships-01.png)
+(battle-of-ships-01.png)
 (battle-of-ships-02.png)
 (battle-of-ships-03.png)
 
