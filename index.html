@@ -15,18 +15,15 @@
     <title>Document</title>
 
     <style>
-        .test-div {
-            background-color: aqua;
-            height: 88px;
+
+        .red-overlay-div {
+            position: absolute;
+            height: 85px;
             width: 350px;
-            position: relative;
         }
 
-        .test-overlay {
-            position: absolute;
+        .red {
             background-color: rgb(255, 0, 0, .5);
-            height: 88px;
-            width: 350px;
         }
         
 
@@ -132,6 +129,7 @@
             display: flex;
             justify-content: space-around;
             margin-bottom: 10px;
+            position: relative;
         }
 
         .ship-description-div {
@@ -308,15 +306,25 @@
 
     function fillShipPanel() {
         for (let ship of ships) {
-            let shipDiv = document.createElement('div');
-            shipDiv.className = 'ship-div';
-            shipPanelEl.appendChild(testDiv);
-            let testOverlay = document.createElement('div');
-            testOverlay.className = 'test-overlay';
-            testDiv.appendChild(testOverlay);
-            let testP = document.createElement('p');
-            testP.innerText = 'sfdsfdsfdsf';
-            testDiv.appendChild(testP);
+            shipImage = document.createElement('img');
+            shipImage.src = ship.image;
+            shipImage.className = 'ship-image';
+            shipImageDiv = document.createElement('div');
+            shipImageDiv.className = 'ship-image-div';
+            shipDescriptionDiv = document.createElement('div');
+            shipDescriptionDiv.className = 'ship-description-div';
+            shipNameP = document.createElement('p');
+            shipNameP.innerText = ship.name;
+            shipSizeP = document.createElement('p');
+            shipSizeP.innerText = 'Size: ' + ship.size;
+            redOverlayDiv = document.createElement('div');
+            redOverlayDiv.className = "red-overlay-div";
+            shipPanelEl.appendChild(shipDescriptionDiv);
+            shipPanelEl.appendChild(shipImageDiv);
+            shipDescriptionDiv.appendChild(shipNameP);
+            shipDescriptionDiv.appendChild(shipSizeP);
+            shipImageDiv.appendChild(redOverlayDiv);
+            shipImageDiv.appendChild(shipImage);
         };
 
     };
