@@ -28,7 +28,7 @@ function clearMainSectionEl() {
 //the main section has 3 panels
 //from left to right those are the info panle, the gameboars, the ship panel
 function createMainSectionStructure() {
-    shotsLeft = 36;
+    shotsLeft = 50;
     clearMainSectionEl();
     infoPanelEl = document.createElement('div');
     infoPanelEl.id = "info-panel";
