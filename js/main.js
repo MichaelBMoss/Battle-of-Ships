@@ -19,7 +19,6 @@ function initialize() {
     fillGameGridAndObjects();
     placeShips();
     fillShipPanel();
-    let test = gameboardEl.querySelectorAll('div');
 };
 
 //the intialize function is meant to double as a rest function so it clears things before building them
