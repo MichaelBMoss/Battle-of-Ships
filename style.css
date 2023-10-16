@@ -1,3 +1,12 @@
+.square-overlay {
+    position: absolute;
+    height: 44px;
+    width: 44px;
+    background-color: rgb(255, 0, 0, 0.5);
+    letf: 0px;
+    top: 0px;
+}
+
 .ship-name-p {
     position: absolute;
     left: 4px;
@@ -29,7 +38,7 @@
     background-position: center;
 }
 
-.red-overlay-div {
+.ship-image-div-overlay {
     position: absolute;
     height: 86px;
     width: 248px;
@@ -118,6 +127,7 @@ body {
     height: 44px;
     width: 44px;
     border: rgba(0, 0, 0, .4) solid 1px;
+    position: relative;
 }
 
 #ship-panel {

@@ -7,9 +7,11 @@ let infoPanelEl;
 let gameboardEl;
 let shipPanelEl;
 let gridObject;
-let orientation;
+let orient;
 let sunkShipsCount;
 let ships = [];
+let usedSquares = []
+let emptyCount;
 
 function initialize() {
     createMainSectionStructure();
@@ -17,6 +19,7 @@ function initialize() {
     fillGameGridAndObjects();
     placeShips();
     fillShipPanel();
+    let test = gameboardEl.querySelectorAll('div');
 };
 
 //the intialize function is meant to double as a rest function so it clears things before building them
@@ -28,7 +31,7 @@ function clearMainSectionEl() {
 //the main section has 3 panels
 //from left to right those are the info panle, the gameboars, the ship panel
 function createMainSectionStructure() {
-    shotsLeft = 50;
+    shotsLeft = 36;
     clearMainSectionEl();
     infoPanelEl = document.createElement('div');
     infoPanelEl.id = "info-panel";
@@ -66,8 +69,10 @@ function fillGameGridAndObjects() {
     {name: 'Destroyer', size: 2, image: 'assets/destroyer.png', damage: 0, tag: 'destroyer'},
     ];
     //reset the grid object and some variables
+    usedSquares = [];
     sunkShipsCount = 0;
     gridObject = {};
+    let squareTag = 0
     //iterate the creation of 10 rows
     for (let rowNum = 1; rowNum <= 10; rowNum++) {
         const rowEl = document.createElement('div');
@@ -81,8 +86,12 @@ function fillGameGridAndObjects() {
             squareEl.className = "square";
             rowEl.appendChild(squareEl);
             //give each entry row in the grid object an entry for each of its squares
-            //set each square to none. some will be filled with ships later.
-            gridObject[rowNum][colNum] = 'none';
+            //set each square to empty. some will be filled with ships later.
+            gridObject[rowNum][colNum] = {};
+            gridObject[rowNum][colNum].tag = squareTag;
+            gridObject[rowNum][colNum].content = 'empty';
+            squareEl.id = squareTag;
+            squareTag++;
             //give each square a click event that sends its row and column number
             squareEl.addEventListener('click', (event) => {
             gameboardClick(rowNum, colNum);
@@ -100,12 +109,12 @@ function placeShips() {
 
 // this is used in the find open spot function
 // randomly get vertical or horizontal orientation
-function setOrientation() {
+function setOrient() {
     const random0to1 = Math.floor(Math.random() * 2);
     if (random0to1 == 0) { 
-        orientation = "vertical";
+        orient = "vertical";
     } else if (random0to1 == 1) { 
-        orientation = "horizontal";
+        orient = "horizontal";
     };
 }
 
@@ -114,10 +123,10 @@ function setOrientation() {
 // but if our spot is too near the edge of the board we will look for a spot that doesn't exist.
 // to avoid an error I subtract the ship size from the random number so the spot can never be close enough to the edge for that to happen
 function getRandoms(ship) {
-    if (orientation == 'vertical') {
+    if (orient == 'vertical') {
         randRow = Math.floor(Math.random() * (10 - ship.size) + 1);
         randCol = Math.floor(Math.random() * 10 + 1);
-    } else if (orientation == 'horizontal') {
+    } else if (orient == 'horizontal') {
         randCol = Math.floor(Math.random() * (10 - ship.size) + 1);
         randRow = Math.floor(Math.random() * 10 + 1);
     };
@@ -125,33 +134,35 @@ function getRandoms(ship) {
 
 // verify there is enough room for the ship based on the intial spot chosen before writing the ship into the grid object squares.
 function findOpenSpot(ship) {
-    setOrientation();
+    setOrient();
     getRandoms(ship);
-    let noneCount = 0;
-    if (orientation == 'vertical') {
+    emptyCount = 0;
+    if (orient == 'vertical') {
         for (let k = 0; k < ship.size; k++) {
-            if (gridObject[randRow + k][randCol] == 'none') {
-            noneCount++
+            if (gridObject[randRow + k][randCol].content == 'empty') {
+            emptyCount++
             };
         };
         //if the size of the ship is equal to the empty squares, write it into all of them.
-        if (ship.size == noneCount) {
+        if (ship.size == emptyCount) {
             for (let m = 0; m < ship.size; m++) {
-                gridObject[randRow + m][randCol] = ship.tag;
-            }
+                gridObject[randRow + m][randCol].content = ship.tag;
+                usedSquares.push(gridObject[randRow + m][randCol].tag)
+            };
         } else {
             findOpenSpot(ship);
         };
-    };
-    if (orientation == 'horizontal') {
+    } else if (orient == 'horizontal') {
         for (let w = 0; w < ship.size; w++) {
-            if (gridObject[randRow][randCol + w] == 'none') {
-            noneCount++
+            if (gridObject[randRow][randCol + w].content == 'empty') {
+            emptyCount++
             };
         };
-        if (ship.size == noneCount) {
+
+        if (ship.size == emptyCount) {
             for (let b = 0; b < ship.size; b++) {
-                gridObject[randRow][randCol + b] = ship.tag;
+                gridObject[randRow][randCol + b].content = ship.tag;
+                usedSquares.push(gridObject[randRow][randCol + b].tag)
             };
         } else {
             findOpenSpot(ship);
@@ -174,24 +185,23 @@ function fillShipPanel() {
         const shipSizeP = document.createElement('p');
         shipSizeP.innerText = 'Size: ' + ship.size;
         shipSizeP.classList = 'ship-size-p';
-        const redOverlayDiv = document.createElement('div');
-        redOverlayDiv.className = "red-overlay-div";
-        redOverlayDiv.id = ship.tag;
+        const shipImageDivOverlay = document.createElement('div');
+        shipImageDivOverlay.className = "ship-image-div-overlay";
+        shipImageDivOverlay.id = ship.tag;
         shipPanelEl.appendChild(shipImageDiv);
         shipImageDiv.appendChild(shipNameP);
         shipImageDiv.appendChild(shipSizeP);
         shipImageDiv.appendChild(shipImage);
-        shipImageDiv.appendChild(redOverlayDiv);
+        shipImageDiv.appendChild(shipImageDivOverlay);
     };
 
 };
 
 function gameboardClick(rowNum, colNum) {
     const clickedSquare = event.target
-    console.log(clickedSquare);
-    if (gridObject[rowNum][colNum] == 'none') {
+    if (gridObject[rowNum][colNum].content == 'empty') {
         miss(rowNum, colNum, clickedSquare);
-    } else if (gridObject[rowNum][colNum] != 'none' && (gridObject[rowNum][colNum] != 'closed')) {
+    } else if (gridObject[rowNum][colNum].content != 'empty' && (gridObject[rowNum][colNum].content != 'closed')) {
         hit(rowNum, colNum, clickedSquare);
     }
     const shotsLeftP = document.getElementById('shots-left'); 
@@ -200,7 +210,7 @@ function gameboardClick(rowNum, colNum) {
 
 function miss(rowNum, colNum, clickedSquare) {
     //close the clicked square
-    gridObject[rowNum][colNum] = 'closed';
+    gridObject[rowNum][colNum].content = 'closed';
     clickedSquare.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
     //reduce the number of shots available
     shotsLeft--;
@@ -210,7 +220,7 @@ function miss(rowNum, colNum, clickedSquare) {
 };
 
 function hit(rowNum, colNum, clickedSquare) {
-    hitShip = gridObject[rowNum][colNum];
+    hitShip = gridObject[rowNum][colNum].content;
     // reduce the number of shots available
     shotsLeft--;
     //if there a hit, check if any ships have been sunk
@@ -223,7 +233,7 @@ function hit(rowNum, colNum, clickedSquare) {
     // check for a loss or win
     checkGameStatus();
     boom.play();
-    gridObject[rowNum][colNum] = 'closed';
+    gridObject[rowNum][colNum].content = 'closed';
     clickedSquare.classList.add('explosion');
 }
 
@@ -252,10 +262,18 @@ function checkGameStatus() {
 
 function lose() {
     closeGameboard();
+    let toBecomeRed;
+    let squareOverlay;
     const youLose = document.createElement('p');
     youLose.innerText = 'YOU LOSE!'
     youLose.className = 'win-lose';
-    mainEl.appendChild(youLose);   
+    mainEl.appendChild(youLose);
+    for (let usedSquare of usedSquares) {
+        toBecomeRed = document.getElementById(usedSquare);
+        squareOverlay = document.createElement('div')
+        squareOverlay.className = 'square-overlay'
+        toBecomeRed.appendChild(squareOverlay);
+    };
 };
 
 function win() {
@@ -269,7 +287,7 @@ function win() {
 function closeGameboard() {
     for (let rowNum = 1; rowNum <= 10; rowNum++) {
         for (let colNum = 1; colNum <= 10; colNum++) {
-            gridObject[rowNum][colNum] = 'closed';
+            gridObject[rowNum][colNum].content = 'closed';
         };
     };
 };
