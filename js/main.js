@@ -83,12 +83,14 @@ function fillGameGridAndObjects() {
         for (let colNum = 1; colNum <= 10; colNum++) {
             const squareEl = document.createElement('div');
             squareEl.className = "square";
-            rowEl.appendChild(squareEl);
             //for each row add a square 10 times
-            //set each square to empty. some will be filled with ships later.
+            rowEl.appendChild(squareEl);
+            //In the grid Object add an object for each square by its row and column
             gridObject[rowNum][colNum] = {};
+            //give the square's entry in the grid object an id and mark it empty
             gridObject[rowNum][colNum].tag = squareTag;
             gridObject[rowNum][colNum].content = 'empty';
+            //give the actual square the same id
             squareEl.id = squareTag;
             squareTag++;
             //give each square a click event that sends its row and column number
