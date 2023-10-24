@@ -59,7 +59,7 @@ function fillInfoPanel() {
 
 
 function fillGameGridAndObjects() {
-    //fill the ship object by hand
+    //fill the ships array by hand
     ships = [
     {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0, tag: 'aircraft-carrier'},
     {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0, tag: 'battleship'},
