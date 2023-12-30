@@ -1,11 +1,6 @@
-.square-overlay {
-    position: absolute;
-    height: 44px;
-    width: 44px;
-    background-color: rgb(255, 0, 0, 0.5);
-    letf: 0px;
-    top: 0px;
-}
+
+
+
 
 .ship-name-p {
     position: absolute;
