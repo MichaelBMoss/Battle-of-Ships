@@ -54,7 +54,10 @@ function fillInfoPanel() {
     shotsLeftP.id = 'shots-left';
     shotsLeftP.innerText = shotsLeft;
     infoPanelEl.appendChild(shotsLeftP);
-
+    const startOverButton = document.createElement('button');
+    startOverButton.innerText = 'Start Over';
+    startOverButton.onclick = initialize;
+    infoPanelEl.appendChild(startOverButton);
 }
 
 
