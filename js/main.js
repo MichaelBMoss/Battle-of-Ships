@@ -269,7 +269,7 @@ function lose() {
     const youLose = document.createElement('p');
     youLose.innerText = 'YOU LOSE!'
     youLose.className = 'win-lose';
-    mainEl.appendChild(youLose);
+    gameboardEl.appendChild(youLose);
     for (let usedSquare of usedSquares) {
         toBecomeRed = document.getElementById(usedSquare);
         squareOverlay = document.createElement('div')
