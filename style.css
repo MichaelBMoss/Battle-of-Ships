@@ -1,6 +1,7 @@
-
-
-
+@font-face {
+    font-family: 'RetroComputerFont';
+    src: url('assets/retro_computer.ttf') format('truetype');
+}
 
 .ship-name-p {
     position: absolute;
@@ -93,8 +94,8 @@ body {
     height: 200px;
     margin-left: 50px;
     color: #298925;
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 20px;
+    font-family: 'RetroComputerFont', sans-serif;
+    font-size: 15px;
     text-align: center;
 }
 
