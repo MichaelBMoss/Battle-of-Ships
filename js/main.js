@@ -30,7 +30,7 @@ function clearMainSectionEl() {
 //the main section has 3 panels
 //from left to right those are the info panle, the gameboars, the ship panel
 function createMainSectionStructure() {
-    shotsLeft = 36;
+    shotsLeft = 38;
     clearMainSectionEl();
     infoPanelEl = document.createElement('div');
     infoPanelEl.id = "info-panel";
@@ -268,7 +268,7 @@ function lose() {
     let squareOverlay;
     const youLose = document.createElement('p');
     youLose.innerText = 'YOU LOSE!'
-    youLose.className = 'win-lose';
+    youLose.className = 'lose';
     gameboardEl.appendChild(youLose);
     for (let usedSquare of usedSquares) {
         toBecomeRed = document.getElementById(usedSquare);
@@ -282,8 +282,8 @@ function win() {
     closeGameboard();
     const youWin = document.createElement('p');
     youWin.innerText = 'YOU WIN!'
-    youWin.className = 'win-lose';
-    mainEl.appendChild(youWin);
+    youWin.className = 'win';
+    gameboardEl.appendChild(youWin);
 };
 
 function closeGameboard() {
