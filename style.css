@@ -66,6 +66,7 @@
 
 body {
     background-image: url('assets/fleet-background.jpg');
+    background-attachment: fixed;
     background-size: cover;
     width: 99vw;
     height: 97vh;
@@ -168,4 +169,25 @@ body {
     height: 88px;
     border: solid 1px black;
     font-size: 13px;
+}
+
+@media (max-width: 1214px) {
+
+    #entire {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #main-section {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    body {
+        width: 100%;
+    }
+
+    #info-panel {
+        margin-left: 0px
+    }
 }
