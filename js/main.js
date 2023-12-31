@@ -62,7 +62,7 @@ function fillInfoPanel() {
 
 
 function fillGameGridAndObjects() {
-    //fill the ship object by hand
+    //fill the ships array by hand
     ships = [
     {name: 'Aircraft Carrier', size: 5, image: 'assets/aircraft-carrier.png', damage: 0, tag: 'aircraft-carrier'},
     {name: 'Battleship', size: 4, image: 'assets/battleship.png', damage: 0, tag: 'battleship'},
@@ -86,12 +86,14 @@ function fillGameGridAndObjects() {
         for (let colNum = 1; colNum <= 10; colNum++) {
             const squareEl = document.createElement('div');
             squareEl.className = "square";
+            //for each row add a square 10 times
             rowEl.appendChild(squareEl);
-            //give each entry row in the grid object an entry for each of its squares
-            //set each square to empty. some will be filled with ships later.
+            //In the grid Object add an object for each square by its row and column
             gridObject[rowNum][colNum] = {};
+            //give the square's entry in the grid object an id and mark it empty
             gridObject[rowNum][colNum].tag = squareTag;
             gridObject[rowNum][colNum].content = 'empty';
+            //give the actual square the same id
             squareEl.id = squareTag;
             squareTag++;
             //give each square a click event that sends its row and column number
@@ -102,15 +104,17 @@ function fillGameGridAndObjects() {
     };
 };
 
-//for each ship I wanted to be able to look for an open spot and then then look again, if I don't find one.
+//For each ship we look for an open spot
+//If the spot is not open we don't rerun placeShips, we don't try again for all the ships
+//Instead if the spot is not open we rerun findOpenSpot, we try again for that one ship
 function placeShips() {
     for (const ship of ships) {
         findOpenSpot(ship);
     };
 };
 
-// this is used in the find open spot function
-// randomly get vertical or horizontal orientation
+// This is used in the find open spot function
+// Randomly get vertical or horizontal orientation
 function setOrient() {
     const random0to1 = Math.floor(Math.random() * 2);
     if (random0to1 == 0) { 
@@ -120,10 +124,12 @@ function setOrient() {
     };
 }
 
-// this is also used in the find open spot function
-// we will choose a spot randomly and then see if there are enough spots for the entire ship by looking either down or to the right
-// but if our spot is too near the edge of the board we will look for a spot that doesn't exist.
-// to avoid an error I subtract the ship size from the random number so the spot can never be close enough to the edge for that to happen
+// This is also used in the find open spot function
+// We get a random row and column out of 10 as a spot to try to place a ship
+// Depending on whether orientation is vertical or horizontal we check addition squares downward or to the right to fit the entire ship
+// If the spot is too near the edge of the board we  will look for a an 11th spot in the row or column
+// Because there is no 11th spot this would throw an error
+// To avoid the error we subtract the ship size from the random number so that the first spot analyzed can never be too close to the edge 
 function getRandoms(ship) {
     if (orient == 'vertical') {
         randRow = Math.floor(Math.random() * (10 - ship.size) + 1);
@@ -134,7 +140,7 @@ function getRandoms(ship) {
     };
 }
 
-// verify there is enough room for the ship based on the intial spot chosen before writing the ship into the grid object squares.
+// Verify there is enough room for the ship based on the intial spot chosen before writing the ship into the grid object squares.
 function findOpenSpot(ship) {
     setOrient();
     getRandoms(ship);
@@ -172,8 +178,8 @@ function findOpenSpot(ship) {
     };
 };
 
-// fill the ship panel
-// include empty divs over the ships to be filled with transparent red overlay when they are sunk
+// Fill the ship panel
+// Include empty divs over the ships to be filled with transparent red overlay when the ship is sunk
 function fillShipPanel() {
     for (const ship of ships) {
         const shipImageDiv = document.createElement('div');
@@ -232,7 +238,7 @@ function hit(rowNum, colNum, clickedSquare) {
             sinkCheck(ship);
         }
     };
-    // check for a loss or win
+    // Check for a loss or win
     checkGameStatus();
     boom.play();
     gridObject[rowNum][colNum].content = 'closed';
