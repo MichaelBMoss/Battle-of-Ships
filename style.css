@@ -140,6 +140,7 @@ body {
 .square {
     display: inline-block;
     height: 44px;
+    aspect-ratio: 1 / 1;
     width: 44px;
     border: rgba(0, 0, 0, .4) solid 1px;
     position: relative;
@@ -181,6 +182,7 @@ body {
     #main-section {
         flex-direction: column;
         width: 100%;
+        margin-left: -8px;
     }
 
     body {
@@ -188,6 +190,25 @@ body {
     }
 
     #info-panel {
-        margin-left: 0px
+        margin-left: 0px;
+        margin-bottom: 15px;
+    }
+
+    #gameboard {
+        width: 360px;
+    }
+
+    .square {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+    }
+
+    .row {
+        height: 36px;
+    }
+
+    #ship-panel {
+        margin-top: 15px;
     }
 }
