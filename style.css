@@ -7,7 +7,7 @@
     position: absolute;
     height: 44px;
     width: 44px;
-    background-color: rgb(255, 0, 0, 0.2);
+    background-color: rgb(255, 0, 0, 0.3);
     left: 0px;
     top: 0px;
 }
@@ -182,7 +182,6 @@ body {
     #main-section {
         flex-direction: column;
         width: 100%;
-        margin-left: -8px;
     }
 
     body {
@@ -199,9 +198,14 @@ body {
     }
 
     .square {
-        display: inline-block;
         width: 30px;
         height: 30px;
+    }
+
+    .square-overlay {
+
+        height: 30px;
+        width: 30px;
     }
 
     .row {
@@ -211,4 +215,18 @@ body {
     #ship-panel {
         margin-top: 15px;
     }
+
+    .lose {
+        top: 80px;
+        left: 32px;
+        font-size: 50px;
+    }
+    
+    .win {
+       top: 80px;
+       left: 45px;
+       font-size: 50px;
+    }
+    }
+
 }
